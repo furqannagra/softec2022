@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e8d0150f3ad74894951b47ce2426528b" Name="Diagram1">
+        <EntityTypeShape EntityType="BookDocModel.Appointment" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.Calender" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.Doctor" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.LookUp" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.Patient" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.SignIn" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDocModel.WaitingList" Width="1.5" PointX="0.75" PointY="13.625" IsExpanded="true" />
+        <AssociationConnector Association="BookDocModel.FK_LookUp_Appointment" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDocModel.FK_LookUp_Calenders" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDocModel.FK_LookUp_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDocModel.FK_LookUp_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDocModel.FK_LookUp_WaitingList" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDocModel.FK_WaitingList_WaitingList" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

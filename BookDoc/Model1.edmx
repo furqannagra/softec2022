@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BookDocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="AppointmentNo" />
+          </Key>
+          <Property Name="AppointmentNo" Type="bigint" Nullable="false" />
+          <Property Name="AppointmentDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Calenders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="AvailableTimes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Speciality" Type="nvarchar(max)" />
+          <Property Name="Fee" Type="bigint" />
+          <Property Name="Timming" Type="time" Precision="7" />
+          <Property Name="Contact" Type="bigint" />
+          <Property Name="Hospital" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LookUp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="PatientId" Type="bigint" />
+          <Property Name="DoctorId" Type="bigint" />
+          <Property Name="AppiontNum" Type="bigint" />
+          <Property Name="WaitingId" Type="bigint" />
+          <Property Name="CalenderId" Type="bigint" />
+          <Property Name="SignIn" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Age" Type="bigint" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SignIn">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="FirstName" Type="varchar(max)" Nullable="false" />
+          <Property Name="Email" Type="varchar(max)" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="Age" Type="varchar(max)" />
+          <Property Name="Gender" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="WaitingList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="Patients" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_LookUp_Appointment">
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="AppointmentNo" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="AppiontNum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Calenders">
+          <End Role="Calenders" Type="Self.Calenders" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calenders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="CalenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_WaitingList">
+          <End Role="WaitingList" Type="Self.WaitingList" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WaitingList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="WaitingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WaitingList_WaitingList">
+          <End Role="WaitingList" Type="Self.WaitingList" Multiplicity="1" />
+          <End Role="WaitingList1" Type="Self.WaitingList" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="WaitingList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WaitingList1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookDocModelStoreContainer">
+          <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calenders" EntityType="Self.Calenders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LookUp" EntityType="Self.LookUp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SignIn" EntityType="Self.SignIn" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WaitingList" EntityType="Self.WaitingList" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LookUp_Appointment" Association="Self.FK_LookUp_Appointment">
+            <End Role="Appointment" EntitySet="Appointment" />
+            <End Role="LookUp" EntitySet="LookUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Calenders" Association="Self.FK_LookUp_Calenders">
+            <End Role="Calenders" EntitySet="Calenders" />
+            <End Role="LookUp" EntitySet="LookUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Doctor" Association="Self.FK_LookUp_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="LookUp" EntitySet="LookUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Patient" Association="Self.FK_LookUp_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="LookUp" EntitySet="LookUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_WaitingList" Association="Self.FK_LookUp_WaitingList">
+            <End Role="WaitingList" EntitySet="WaitingList" />
+            <End Role="LookUp" EntitySet="LookUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WaitingList_WaitingList" Association="Self.FK_WaitingList_WaitingList">
+            <End Role="WaitingList" EntitySet="WaitingList" />
+            <End Role="WaitingList1" EntitySet="WaitingList" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BookDocModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="AppointmentNo" />
+          </Key>
+          <Property Name="AppointmentNo" Type="Int64" Nullable="false" />
+          <Property Name="AppointmentDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="LookUps" Relationship="Self.FK_LookUp_Appointment" FromRole="Appointment" ToRole="LookUp" />
+        </EntityType>
+        <EntityType Name="Calender">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="AvailableTimes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LookUps" Relationship="Self.FK_LookUp_Calenders" FromRole="Calenders" ToRole="LookUp" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Speciality" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fee" Type="Int64" />
+          <Property Name="Timming" Type="Time" Precision="7" />
+          <Property Name="Contact" Type="Int64" />
+          <Property Name="Hospital" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LookUps" Relationship="Self.FK_LookUp_Doctor" FromRole="Doctor" ToRole="LookUp" />
+        </EntityType>
+        <EntityType Name="LookUp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="PatientId" Type="Int64" />
+          <Property Name="DoctorId" Type="Int64" />
+          <Property Name="AppiontNum" Type="Int64" />
+          <Property Name="WaitingId" Type="Int64" />
+          <Property Name="CalenderId" Type="Int64" />
+          <Property Name="SignIn" Type="Int64" />
+          <NavigationProperty Name="Appointment" Relationship="Self.FK_LookUp_Appointment" FromRole="LookUp" ToRole="Appointment" />
+          <NavigationProperty Name="Calender" Relationship="Self.FK_LookUp_Calenders" FromRole="LookUp" ToRole="Calenders" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_LookUp_Doctor" FromRole="LookUp" ToRole="Doctor" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_LookUp_Patient" FromRole="LookUp" ToRole="Patient" />
+          <NavigationProperty Name="WaitingList" Relationship="Self.FK_LookUp_WaitingList" FromRole="LookUp" ToRole="WaitingList" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int64" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LookUps" Relationship="Self.FK_LookUp_Patient" FromRole="Patient" ToRole="LookUp" />
+        </EntityType>
+        <EntityType Name="SignIn">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Age" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="WaitingList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="Patients" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="LookUps" Relationship="Self.FK_LookUp_WaitingList" FromRole="WaitingList" ToRole="LookUp" />
+          <NavigationProperty Name="WaitingList1" Relationship="Self.FK_WaitingList_WaitingList" FromRole="WaitingList" ToRole="WaitingList1" />
+          <NavigationProperty Name="WaitingList2" Relationship="Self.FK_WaitingList_WaitingList" FromRole="WaitingList1" ToRole="WaitingList" />
+        </EntityType>
+        <Association Name="FK_LookUp_Appointment">
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="AppointmentNo" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="AppiontNum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Calenders">
+          <End Role="Calenders" Type="Self.Calender" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Calenders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="CalenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LookUp_WaitingList">
+          <End Role="WaitingList" Type="Self.WaitingList" Multiplicity="0..1" />
+          <End Role="LookUp" Type="Self.LookUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WaitingList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LookUp">
+              <PropertyRef Name="WaitingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WaitingList_WaitingList">
+          <End Role="WaitingList" Type="Self.WaitingList" Multiplicity="1" />
+          <End Role="WaitingList1" Type="Self.WaitingList" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="WaitingList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WaitingList1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookDocEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Appointments" EntityType="Self.Appointment" />
+          <EntitySet Name="Calenders" EntityType="Self.Calender" />
+          <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="LookUps" EntityType="Self.LookUp" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
+          <EntitySet Name="SignIns" EntityType="Self.SignIn" />
+          <EntitySet Name="WaitingLists" EntityType="Self.WaitingList" />
+          <AssociationSet Name="FK_LookUp_Appointment" Association="Self.FK_LookUp_Appointment">
+            <End Role="Appointment" EntitySet="Appointments" />
+            <End Role="LookUp" EntitySet="LookUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Calenders" Association="Self.FK_LookUp_Calenders">
+            <End Role="Calenders" EntitySet="Calenders" />
+            <End Role="LookUp" EntitySet="LookUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Doctor" Association="Self.FK_LookUp_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="LookUp" EntitySet="LookUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_Patient" Association="Self.FK_LookUp_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="LookUp" EntitySet="LookUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LookUp_WaitingList" Association="Self.FK_LookUp_WaitingList">
+            <End Role="WaitingList" EntitySet="WaitingLists" />
+            <End Role="LookUp" EntitySet="LookUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WaitingList_WaitingList" Association="Self.FK_WaitingList_WaitingList">
+            <End Role="WaitingList" EntitySet="WaitingLists" />
+            <End Role="WaitingList1" EntitySet="WaitingLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BookDocModelStoreContainer" CdmEntityContainer="BookDocEntities">
+          <EntitySetMapping Name="Appointments">
+            <EntityTypeMapping TypeName="BookDocModel.Appointment">
+              <MappingFragment StoreEntitySet="Appointment">
+                <ScalarProperty Name="AppointmentNo" ColumnName="AppointmentNo" />
+                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Calenders">
+            <EntityTypeMapping TypeName="BookDocModel.Calender">
+              <MappingFragment StoreEntitySet="Calenders">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="AvailableTimes" ColumnName="AvailableTimes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="BookDocModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Speciality" ColumnName="Speciality" />
+                <ScalarProperty Name="Fee" ColumnName="Fee" />
+                <ScalarProperty Name="Timming" ColumnName="Timming" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Hospital" ColumnName="Hospital" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LookUps">
+            <EntityTypeMapping TypeName="BookDocModel.LookUp">
+              <MappingFragment StoreEntitySet="LookUp">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+                <ScalarProperty Name="AppiontNum" ColumnName="AppiontNum" />
+                <ScalarProperty Name="WaitingId" ColumnName="WaitingId" />
+                <ScalarProperty Name="CalenderId" ColumnName="CalenderId" />
+                <ScalarProperty Name="SignIn" ColumnName="SignIn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="BookDocModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignIns">
+            <EntityTypeMapping TypeName="BookDocModel.SignIn">
+              <MappingFragment StoreEntitySet="SignIn">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WaitingLists">
+            <EntityTypeMapping TypeName="BookDocModel.WaitingList">
+              <MappingFragment StoreEntitySet="WaitingList">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Patients" ColumnName="Patients" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
